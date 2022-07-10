@@ -34,3 +34,10 @@ int print_bin(va_list b)
 			powten /= 2;
 		}
 	}
+	else
+	{
+		_putchar('0');
+		return (1);
+	}
+	return (count);
+}
