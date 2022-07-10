@@ -47,3 +47,14 @@ int print_hex(unsigned int n, unsigned int c)
 	}
 	return (count);
 }
+
+/**
+* print_x - prints in lowercase hexadecimal
+* @x: int to print
+* Return: size of the output
+*/
+
+int print_x(va_list x)
+{
+	return (print_hex(va_arg(x, unsigned int), 0));
+}
