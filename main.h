@@ -11,6 +11,7 @@ int print_char(va_list c);
 int print_string(va_list s);
 int print_int(va_list i);
 int print_dec(va_list d);
+int print_bin(va_list b);
 
 /**
   * struct code_format - Struct format
