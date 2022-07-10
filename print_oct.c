@@ -32,3 +32,10 @@ int print_octal(va_list o)
 			powten /= 8;
 		}
 	}
+	else
+	{
+		_putchar('0');
+		return (1);
+	}
+	return (count);
+}
