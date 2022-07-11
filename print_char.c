@@ -1,28 +1,32 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
 /**
- * print_char - writes the character c to stdout
- * @c: The character to print
- * Return: 1
+ * print_char - prints a char
+ * @list: va_list pointer
+ * @modif: struct modifier
+ * Return: char
  */
 
-int print_char(va_list c)
+char *print_char (modifier_t *modif, va_list list)
 {
-	unsigned char my_char;
+	char *ch;
+	char c;
 
-	my_char = va_arg(c, int);
-	_putchar(my_char);
-	return (1);
-}
-
-/**
- * print_percentage - percentage to print
- * Return: 1.
- */
-
-int print_percentage(void)
-{
-	_putchar('%');
-	return (1);
+	if (!list || !modif)
+		return (0);
+	c = va_arg(list, int);
+	ch = malloc(2);
+	if (!ch)
+	{
+		return (NULL);
+	}
+	if (c)
+	{
+		ch[0] = c;
+	}
+	else
+	{
+		ch[0] = '\0';
+	}
+	ch[1] = '\0';
+	return (ch);
 }
