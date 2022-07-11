@@ -1,43 +1,39 @@
-#include <stdarg.h>
-#include <stdio.h>
 #include "main.h"
+
 /**
-* print_bin - convert to binary
-* @b: decimal number
-* Return: number of chars
-*/
+ * print_binary - print unsigned int as binary
+ * @modif: struct
+ * @list: va_list pointer
+ * Return: number of printed characters
+ */
 
-int print_bin(va_list b)
+char *print_binary(modifier_t *modif, va_list list)
 {
-	unsigned int len, powten, j, digit, n, num;
-	int count = 0;
+	unsigned int n;
+	int i = 0, j = 0;
+	char binary[35], *res_str;
 
-	n = va_arg(b, unsigned int);
-	if (n != 0)
+	if (!list || !modif || modif->specifier != 'b')
+		return (0);
+	n = va_arg(list, unsigned int);
+	if (n == 0)
 	{
-		num = n;
-		len = 0;
-		while (num != 0)
-		{
-			num /= 2;
-			len++;
-		}
-		powten = 1;
-		for (j = 1; j <= len - 1; j++)
-			powten *= 2;
-		for (j = 1; j <= len; j++)
-		{
-			digit = n / powten;
-			_putchar(digit + '0');
-			count++;
-			n -= digit * powten;
-			powten /= 2;
-		}
+		j = 1;
+		res_str = malloc(sizeof(char) * 2);
+		res_str[0] = '0';
 	}
 	else
 	{
-		_putchar('0');
-		return (1);
+		while (n)
+		{
+			binary[i++] = '0' + (n % 2);
+			n = n / 2;
+		}
+		res_str = malloc(sizeof(char) * i);
+		i--;
+		while (i >= 0)
+			res_str[j++] = binary[i--];
 	}
-	return (count);
+	res_str[j] = '\0';
+	return (res_str);
 }
