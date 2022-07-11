@@ -40,6 +40,7 @@ int buffer_add(char buffer[], char *str, unsigned int *buffer_pos)
 	*buffer_pos = pos;
 	return (count);
 }
+
 /**
  * _printf - produces output according to a format
  * @format: character string
@@ -77,3 +78,4 @@ int _printf(const char *format, ...)
 	if (!count)
 		count = -1;
 	return (count);
+}
