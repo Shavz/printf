@@ -44,7 +44,7 @@ char *get_flags(const char *s, unsigned int *pos)
 /**
  * get_width - get width field
  * @s: string
- * @pos: position to start 
+ * @pos: position to start
  * Return: width int
  */
 
