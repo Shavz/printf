@@ -40,3 +40,140 @@ char *get_flags(const char *s, unsigned int *pos)
 		res_flags[size - 1] = '\0';
 	return (res_flags);
 }
+
+/**
+ * get_width - get width field
+ * @s: string
+ * @pos: position to start 
+ * Return: width int
+ */
+
+int get_width(const char *s, unsigned int *pos)
+{
+	int res_width = -1, found;
+
+	if (s[(*pos) + 1] == '0')
+		return (-1);
+	if (s[(*pos) + 1] == '*')
+	{
+		(*pos)++;
+		return (0);
+	}
+	do {
+		found = 0;
+		if (s[(*pos) + 1] >= '0' && s[(*pos) + 1] <= '9')
+		{
+			if (res_width < 0)
+				res_width = s[(*pos) + 1] - '0';
+			else
+			{
+				res_width *= 10;
+				res_width += s[(*pos) + 1] - '0';
+			}
+			found = 1;
+			(*pos)++;
+		}
+	} while (found);
+	return (res_width);
+}
+
+/**
+ * get_precision - get precision field
+ * @s: string
+ * @pos: position to start
+ * Return: precision int
+ */
+
+int get_precision(const char *s, unsigned int *pos)
+{
+	int res_prec = 0, found;
+
+	if (s[(*pos) + 1] != '.')
+		return (-2);
+	(*pos)++;
+	if (s[(*pos) + 1] == '*')
+	{
+		(*pos)++;
+		return (-1);
+	}
+	do {
+		found = 0;
+		if (s[(*pos) + 1] >= '0' && s[(*pos) + 1] <= '9')
+		{
+			if (res_prec == 0 && s[(*pos) + 1] != '0')
+				res_prec = s[(*pos) + 1] - '0';
+			else if (res_prec > 0)
+			{
+				res_prec *= 10;
+				res_prec += s[(*pos) + 1] - '0';
+			}
+			found = 1;
+			(*pos)++;
+		}
+	} while (found);
+	return (res_prec);
+}
+
+/**
+ * get_length - get length field
+ * @s: string
+ * @pos: position to start
+ * Return: string
+ */
+
+char *get_length(const char *s, unsigned int *pos)
+{
+	char *length_arr = "hl";
+	char *res_length = NULL;
+	int i, found;
+	size_t size = 1;
+
+	do {
+		found = 0;
+		i = 0;
+		while (length_arr[i] && !found)
+		{
+			if (s[(*pos) + 1] == length_arr[i])
+			{
+				size += sizeof(char);
+				res_length = _realloc(res_length, size - sizeof(char), size);
+				if (res_length == NULL)
+				{
+					free(res_length);
+					return (NULL);
+				}
+				res_length[size - 2] = s[(*pos) + 1];
+				found = 1;
+				(*pos)++;
+			}
+			i++;
+		}
+	} while (found);
+	if (res_length != NULL)
+		res_length[size - 1] = '\0';
+	return (res_length);
+}
+
+
+/**
+ * get_specifier - get specifier field
+ * @s: string
+ * @pos: position to start
+ * Return: char
+ */
+
+char get_specifier(const char *s, unsigned int *pos)
+{
+	char *spec_arr = "cs%dibuoxXSprR";
+	int i;
+
+	for (i = 0; spec_arr[i]; i++)
+	{
+		if (spec_arr[i] == s[(*pos) + 1])
+		{
+			(*pos)++;
+			return (spec_arr[i]);
+		}
+	}
+	return (0);
+}
