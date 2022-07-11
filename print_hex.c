@@ -1,71 +1,68 @@
 #include "main.h"
+
 /**
-* print_hex - function to print in hexadecimal
-* @n: int to print
-* @c: case of printing (0 = lower, 1 = upper)
-* Return: size of output
-*/
+ * treat_flags_hex - check flags
+ * @flags: string of flags
+ * @buffer: to store result
+ * @size: size of buffer
+ * @_case: case of characters
+ */
 
-int print_hex(unsigned int n, unsigned int c)
+void treat_flags_hex(char *flags, char *buffer, int *size, char _case)
 {
-	unsigned int len, powten, j, digit, num;
-	int count = 0;
-	char diff;
+	int i;
 
-	if (n != 0)
+	for (i = 0; flags && flags[i]; i++)
 	{
-		num = n;
-		len = 0;
-		if (c)
-			diff = 'A' - ':';
-		else
-			diff = 'a' - ':';
-		while (num != 0)
+		if (flags[i] == '#')
 		{
-			num /= 16;
-			len++;
+			buffer[(*size)++] = _case + 23;
+			buffer[(*size)++] = '0';
 		}
-		powten = 1;
-		for (j = 1; j <= len - 1; j++)
-			powten *= 16;
-		for (j = 1; j <= len; j++)
-		{
-			digit = n / powten;
-			if (digit < 10)
-				_putchar(digit + '0');
-			else
-				_putchar(digit + '0' + diff);
-			count++;
-			n -= digit * powten;
-			powten /= 16;
-		}
+	}
+}
+/**
+ * print_hex - print decimal as hexadecimal
+ * @modif: struct modifier
+ * @list: va_list pointer
+ * Return: number of printed characters
+ */
+
+char *print_hex(modifier_t *modif, va_list list)
+{
+	unsigned int n, aux;
+	int i = 0, j = 0;
+	char buffer[11], _case, *res_str;
+
+	if (!list || !modif)
+		return (0);
+	n = va_arg(list, unsigned int);
+	_case = modif->specifier == 'x' ? 'a' : 'A';
+	if (n == 0)
+	{
+		j = 1;
+		res_str = malloc(sizeof(char) * 2);
+		res_str[0] = '0';
 	}
 	else
 	{
-		_putchar('0');
-		return (1);
+		while (n)
+		{
+			aux = n % 16;
+			if (aux > 9)
+				buffer[i++] = (aux % 10) + _case;
+			else
+				buffer[i++] = aux + '0';
+			n = n / 16;
+		}
+		treat_flags_hex(modif->flags, buffer, &i, _case);
+		res_str = malloc(sizeof(char) * i);
+		i--;
+		while (i >= 0)
+		{
+			res_str[j++] = buffer[i--];
+		}
 	}
-	return (count);
-}
-
-/**
-* print_x - prints in lowercase hexadecimal
-* @x: int to print
-* Return: size of the output
-*/
-
-int print_x(va_list x)
-{
-	return (print_hex(va_arg(x, unsigned int), 0));
-}
-
-/**
-* print_X - prints in uppercase hexadecimal
-* @X: int to print
-* Return: size of the output
-*/
-
-int print_X(va_list X)
-{
-	return (print_hex(va_arg(X, unsigned int), 1));
+	res_str[j] = '\0';
+	return (res_str);
 }
