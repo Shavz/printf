@@ -1,48 +1,75 @@
 #include "main.h"
+
 /**
-* print_int - prints an int
-* @i: int to print
-* Return: size the output text
-*/
+ * treat_flags - flags + and ' '
+ * @flags: flags string
+ * @buffer: to store result
+ * @size: size of buffer
+ */
 
-int print_int(va_list i)
+void treat_flags(char *flags, char *buffer, int *size)
 {
-	int len, powten, j, digit, n, count = 0, num;
+	char sign = buffer[(*size) - 1];
+	int i;
 
-	n = va_arg(i, int);
-	if (n != 0)
+	if (flags && sign != '-')
 	{
-		if (n < 0)
+		for (i = 0; flags[i]; i++)
 		{
-			_putchar('-');
-			count++;
+			if (flags[i] == ' ')
+				buffer[*size] = ' ';
 		}
-		num = n;
-		len = 0;
-		while (num != 0)
+		for (i = 0; flags[i]; i++)
 		{
-			num /= 10;
-			len++;
+			if (flags[i] == '+')
+				buffer[*size] = '+';
 		}
-		powten = 1;
-		for (j = 1; j <= len - 1; j++)
-			powten *= 10;
-		for (j = 1; j <= len; j++)
-		{
-			digit = n / powten;
-			if (n < 0)
-				_putchar((digit * -1) + 48);
-			else
-				_putchar(digit + '0');
-			count++;
-			n -= digit * powten;
-			powten /= 10;
-		}
+		if (buffer[*size] == '+' || buffer[*size] == ' ')
+			(*size)++;
+	}
+}
+
+/**
+ * print_int - print integer
+ * @list: va_list pointer
+ * @modif: struct modifier
+ * Return: int
+ */
+
+char *print_int(modifier_t *modif, va_list list)
+{
+	unsigned int x;
+	int i = 0, j = 0, n;
+	char buffer[10], *res_str;
+
+	if (!list && !modif)
+		return (NULL);
+	n = va_arg(list, int);
+	if (n == 0)
+	{
+		j = 1;
+		res_str = malloc(sizeof(char) * 2);
+		res_str[0] = '0';
 	}
 	else
 	{
-		_putchar('0');
-		return (1);
+		if (n < 0)
+			x = -n;
+		else
+			x = n;
+		while (x)
+		{
+			buffer[i++] = (x % 10) + '0';
+			x = x / 10;
+		}
+		if (n < 0)
+			buffer[i++] = '-';
+		treat_flags(modif->flags, buffer, &i);
+		res_str = malloc(sizeof(char) * i);
+		i--;
+		while (i >= 0)
+			res_str[j++] = buffer[i--];
 	}
-	return (count);
+	res_str[j] = '\0';
+	return (res_str);
 }
