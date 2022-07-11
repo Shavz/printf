@@ -1,80 +1,42 @@
-#include <stdarg.h>
 #include <unistd.h>
 #include "main.h"
+#include <stdio.h>
+
 /**
-  * find_function - function that finds formats for _printf
-  * @format: format (char, string, int, dec)
-  * Return: 0
-  */
+ * buffer_print - print buffer to stdout
+ * @buffer: buffer to print
+ * @nbytes: number of bytes to print
+ * Return: nbytes
+ */
 
-int (*find_function(const char *format))(va_list)
+int buffer_print(char buffer[], unsigned int nbytes)
 {
-	unsigned int i = 0;
-	code_f find_f[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"i", print_int},
-		{"d", print_dec},
-		{"b", print_bin},
-		{"u", print_unsig},
-		{"o", print_octal},
-		{"x", print_x},
-		{"X", print_X},
-		{"r", print_rev},
-		{"R", print_rot13},
-		{NULL, NULL}
-	};
-
-	while (find_f[i].sc)
-	{
-		if (find_f[i].sc[0] == (*format))
-			return (find_f[i].f);
-		i++;
-	}
-	return (NULL);
+	write(1, buffer, nbytes);
+	return (nbytes);
 }
 
 /**
-  * _printf - function to produce output
-  * @format: format (char, string, int, dec)
-  * Return: size of output text
-  */
+ * buffer_add - adds string to buffer
+ * @buffer: buffer to fill
+ * @str: str to add
+ * @buffer_pos: pointer to buffer first empty position
+ * Return: char
+ */
 
-int _printf(const char *format, ...)
+int buffer_add(char buffer[], char *str, unsigned int *buffer_pos)
 {
-	va_list list;
-	int (*f)(va_list);
-	unsigned int i = 0, cprint = 0;
+	int i = 0;
+	unsigned int count = 0, pos = *buffer_pos, size = BUFFER_SIZE;
 
-	if (format == NULL)
-		return (-1);
-	va_start(list, format);
-	while (format[i])
+	while (str && str[i])
 	{
-		while (format[i] != '%' && format[i])
+		if (pos == size)
 		{
-			_putchar(format[i]);
-			cprint++;
-			i++;
+			count += buffer_print(buffer, pos);
+			pos = 0;
 		}
-		if (format[i] == '\0')
-			return (cprint);
-		f = find_function(&format[i + 1]);
-		if (f != NULL)
-		{
-			cprint += f(list);
-			i += 2;
-			continue;
-		}
-		if (!format[i + 1])
-			return (-1);
-		_putchar(format[i]);
-		cprint++;
-		if (format[i + 1] == '%')
-			i += 2;
-		else
-			i++;
+		buffer[pos++] = str[i++];
 	}
-	va_end(list);
-	return (cprint);
+	*buffer_pos = pos;
+	return (count);
 }
