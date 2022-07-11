@@ -1,26 +1,28 @@
-#include <stdarg.h>
-#include <stdio.h>
 #include "main.h"
 /**
-*print_rev - print string in reverse
-*@r: string to print
-*Return: number of chars printed
-*/
+ * print_rev - print a string in reverse
+ * @list: va_list
+ * @modif :struct modifier
+ * Return: string
+ */
 
-int print_rev(va_list r)
+char *print_rev(modifier_t *modif, va_list list)
 {
-	char *st;
-	int i, j = 0;
+	int i;
+	int length;
+	char *str, *ret;
 
-	st = va_arg(r, char *);
-	if (st == NULL)
-		st = ")llun(";
-	for (i = 0; st[i] != '\0'; i++)
-		;
-	for (i -= 1 ; i >= 0; i--)
-	{
-		_putchar(st[i]);
-		j++;
-	}
-	return (j);
+	if (!list || !modif)
+		return (0);
+	str = va_arg(list, char *);
+	length = _strlen(str);
+	ret = malloc(length + 1);
+	if (!ret)
+		return (NULL);
+
+	for (i = 0; i < length; i++)
+		ret[i] = str[length - i - 1];
+	ret[i] = '\0';
+
+	return (ret);
 }
