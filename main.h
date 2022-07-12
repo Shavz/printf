@@ -15,11 +15,11 @@
  */
 typedef struct flags
 {
-int plus;
-int space;
-int hash;
-int minus;
-int zero;
+unsigned int plus   :1;
+unsigned int space  :1;
+unsigned int hash   :1;
+unsigned int minus  :1;
+unsigned int zero   :1;
 } flags_t;
 
 /**
