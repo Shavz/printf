@@ -1,12 +1,12 @@
 # printf
-Creating printf function 
+Creating printf function
 ​
 ## Description
 A formatted output conversion C program completed . The program is a recreation of the C standard library function
 ​
 * Prototype: `int _printf(const char *format, ...);`
 ​
-## Usage 
+## Usage
 To use the `_printf` compile all `.c` files in the repository and include the header `main.h` with any main function.
 ​
 Example `main.c`:
@@ -22,7 +22,7 @@ int main(void)
 ​
 ​
 Compilation:
-$ gcc *.c -o 
+$ gcc *.c -o
 ​
 Output:
 ​
@@ -92,7 +92,7 @@ A
 ​
 #### s
 The ` char *` argument  is a pointer to a character array or
-pointer to a string and is printed starting from first element to the end `\0` 
+pointer to a string and is printed starting from first element to the end `\0`
 excluding null byte
 ​
 Example
@@ -123,7 +123,7 @@ olleH
 ​
 ​
 #### R
- Convert the `char *` to Rot13 
+ Convert the `char *` to Rot13
 Example:
 ​
     _printf("%R\n", "Hello, World");
@@ -163,7 +163,7 @@ Output:
 ## Other Features
 This function also handles :
 * The flag characters for non-custom conversion specifiers (`+` `SPACE ` `#`)
-* The length modifiers for non-custom conversion(`d, i, u, o, x, X`) specifiers(`l` `h`) 
+* The length modifiers for non-custom conversion(`d, i, u, o, x, X`) specifiers(`l` `h`)
 ​
 ## Contributors:
 * Shavin Lillkant
