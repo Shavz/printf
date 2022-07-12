@@ -25,14 +25,6 @@ case '#':
 f->hash = 1;
 i = 1;
 break;
-case '-':
-f->minus = 1;
-i = 1;
-break;
-case '0':
-f->zero = 1;
-i = 1;
-break;
 }
 return (i);
 }
